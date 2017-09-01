@@ -1,0 +1,92 @@
+Terminals:
+
+* b a ( ) + 
+
+Non-terminals:
+
+R 
+
+First Set:
+
+R: b a ( 
+*: * 
+a: a 
+(: ( 
+): ) 
++: + 
+b: b 
+
+Follow Set:
+
+R: b * $ a ( ) + 
+Z: $ 
+
+
+States:
+
+Z->.R	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	
+Z->R.	R->R.+R	R->R.R	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	R->R.*	
+R->(.R)	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	
+R->a.	
+R->b.	
+R->R+.R	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	
+R->RR.	R->R.+R	R->R.R	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	R->R.*	
+R->R*.	
+R->(R.)	R->R.+R	R->R.R	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	R->R.*	
+R->R+R.	R->R.+R	R->R.R	R->.R+R	R->.RR	R->.R*	R->.(R)	R->.a	R->.b	R->R.*	
+R->(R).	
+
+
+Parsing Table:
+
+0	R: 1	b: s4	a: s3	(: s2	
+1	R: 6	b: s4	a: s3	(: s2	$: A	+: s5	*: s7	
+2	R: 8	b: s4	a: s3	(: s2	
+3	b: r5	a: r5	): r5	(: r5	+: r5	$: r5	*: r5	
+4	b: r6	a: r6	): r6	(: r6	+: r6	$: r6	*: r6	
+5	R: 9	b: s4	a: s3	(: s2	
+6	R: 6	b: s4 r2	a: s3 r2	): r2	(: s2 r2	$: r2	+: s5 r2	*: s7 r2	
+7	b: r3	a: r3	): r3	(: r3	+: r3	$: r3	*: r3	
+8	R: 6	b: s4	a: s3	): s10	(: s2	+: s5	*: s7	
+9	R: 6	b: s4 r1	a: s3 r1	): r1	(: s2 r1	$: r1	+: s5 r1	*: s7 r1	
+10	b: r4	a: r4	): r4	(: r4	+: r4	$: r4	*: r4	
+11	b: r3	a: r3	): r3	(: r3	+: r3	$: r3	*: r3	
+
+Table used during parsing:
+
+0	R: 1	b: s4	a: s3	(: s2	
+1	R: 6	b: s4	a: s3	(: s2	$: A	+: s5	*: s7	
+2	R: 8	b: s4	a: s3	(: s2	
+3	b: r5	a: r5	): r5	(: r5	+: r5	$: r5	*: r5	
+4	b: r6	a: r6	): r6	(: r6	+: r6	$: r6	*: r6	
+5	R: 9	b: s4	a: s3	(: s2	
+6	R: 6	b: s4	a: s3	): r2	(: s2	$: r2	+: s5	*: s7	
+7	b: r3	a: r3	): r3	(: r3	+: r3	$: r3	*: r3	
+8	R: 6	b: s4	a: s3	): s10	(: s2	+: s5	*: s7	
+9	R: 6	b: s4	a: s3	): r1	(: s2	$: r1	+: s5	*: s7	
+10	b: r4	a: r4	): r4	(: r4	+: r4	$: r4	*: r4	
+11	b: r3	a: r3	): r3	(: r3	+: r3	$: r3	*: r3	
+
+Stepwise Parsing:
+
+0                   a+b(ab)*$           s3	
+0a3                 +b(ab)*$            r1	(R->a)
+0R1                 +b(ab)*$            s5	
+0R1+5               b(ab)*$             s4	
+0R1+5b4             (ab)*$              r9	(R->b)
+0R1+5R9             (ab)*$              s2	
+0R1+5R9(2           ab)*$               s3	
+0R1+5R9(2a3         b)*$                r8	(R->a)
+0R1+5R9(2R8         b)*$                s4	
+0R1+5R9(2R8b4       )*$                 r6	(R->b)
+0R1+5R9(2R8R6       )*$                 r8	(R->RR)
+0R1+5R9(2R8         )*$                 s10	
+0R1+5R9(2R8)10      *$                  r6	(R->(R))
+0R1+5R9R6           *$                  s7	
+0R1+5R9R6*7         $                   r6	(R->R*)
+0R1+5R9R6           $                   r9	(R->RR)
+0R1+5R9             $                   r1	(R->R+R)
+0R1                 $                   Accepted
+
+********* a+b(ab)*$ Accepted *********
+
